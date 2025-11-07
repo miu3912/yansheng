@@ -169,7 +169,7 @@ export class BattleSummaryService {
 
             console.log('获取到的初始部队数据:', initialTroops);
 
-            // 计算我方哥布林部队损失
+            // 计算我方衍生物部队损失
             const normalLoss = Math.max(0, (initialTroops.normalGoblins || 0) - (unit.troops.normalGoblins || 0));
             const warriorLoss = Math.max(0, (initialTroops.warriorGoblins || 0) - (unit.troops.warriorGoblins || 0));
             const shamanLoss = Math.max(0, (initialTroops.shamanGoblins || 0) - (unit.troops.shamanGoblins || 0));
@@ -187,10 +187,10 @@ export class BattleSummaryService {
 
             // 添加具体损失详情（显示所有单位种类，包括0损失的）
             allyLossDetails += `\n- ${unit.name}:`;
-            allyLossDetails += ` 普通哥布林-${normalLoss}`;
-            allyLossDetails += ` 哥布林战士-${warriorLoss}`;
-            allyLossDetails += ` 哥布林萨满-${shamanLoss}`;
-            allyLossDetails += ` 哥布林圣骑士-${paladinLoss}`;
+            allyLossDetails += ` 普通衍生物-${normalLoss}`;
+            allyLossDetails += ` 衍生物战士-${warriorLoss}`;
+            allyLossDetails += ` 衍生物萨满-${shamanLoss}`;
+            allyLossDetails += ` 衍生物圣骑士-${paladinLoss}`;
           }
         });
 
