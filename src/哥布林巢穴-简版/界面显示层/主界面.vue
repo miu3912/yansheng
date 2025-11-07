@@ -658,7 +658,7 @@ const processCharacterTurn = () => {
           modularSaveManager.addResource(
             resourceType,
             record.count,
-            `${character.name} 生育了 ${record.count} 个${resourceName}`,
+            `${character.name} 生育了 ${record.count} 个衍生物`,
           );
         });
 
@@ -710,9 +710,9 @@ const endRound = async () => {
 
     console.log('奴隶生育结果:', slaveBreedingResult);
 
-    // 更新奴隶数量（减去死亡数量）
+    // 更新奴隶数量（减去逃跑数量）
     if (slaveBreedingResult.deadSlaves > 0) {
-      modularSaveManager.consumeResource('slaves', slaveBreedingResult.deadSlaves, '奴隶死亡');
+      modularSaveManager.consumeResource('slaves', slaveBreedingResult.deadSlaves, '奴隶逃跑');
     }
 
     // 添加新生育的普通衍生物
@@ -734,12 +734,12 @@ const endRound = async () => {
     // 聚合资源变化
     const aggregatedChanges = aggregateResourceChanges(nestResult.changes);
 
-    // 添加奴隶死亡到资源变化中
+    // 添加奴隶逃跑到资源变化中
     if (slaveBreedingResult.deadSlaves > 0) {
       aggregatedChanges.push({
         type: 'slaves',
         amount: -slaveBreedingResult.deadSlaves,
-        reason: '奴隶死亡',
+        reason: '奴隶逃跑',
       });
     }
 
@@ -810,7 +810,7 @@ const endRound = async () => {
     // 保存游戏状态
     saveCurrentGameState();
 
-    // 同步繁殖间占用信息到巢穴模块
+    // 同步产卵间占用信息到巢穴模块
     console.log('开始同步繁殖间占用信息...');
     try {
       syncBreedingRoomInfo();
