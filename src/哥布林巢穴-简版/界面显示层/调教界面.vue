@@ -2170,7 +2170,7 @@ const batchBreeding = async () => {
   // 如果繁殖间数量不足，显示确认框
   if (availableBreedingRooms.length < eligibleCharacters.length) {
     const confirmed = await ConfirmService.showWarning(
-      `检测到繁殖间数量不足！`,
+      `检测到产卵间数量不足！`,
       '确认批量生育',
       `当前有 ${eligibleCharacters.length} 个人物符合生育条件，但只有 ${availableBreedingRooms.length} 个繁殖间可用。\n\n继续操作将按优先级为前 ${availableBreedingRooms.length} 个人物分配繁殖间，剩余 ${eligibleCharacters.length - availableBreedingRooms.length} 个人物将无法进行生育。\n\n是否继续？`,
     );
