@@ -17,15 +17,15 @@ export class BreedingService {
     const fertilityBonus = Math.floor(character.fertility / 40); // 每25点生育值+1点加成（因为生育值范围是0-200）
     const totalBonus = loyaltyBonus + fertilityBonus;
 
-    // 根据角色评级决定可生育的哥布林类型
+    // 根据角色评级决定可生育的衍生物类型
     const canBreedAll = character.rating === 'S' || character.rating === 'A';
     const canBreedWarrior = canBreedAll || ['B', 'C', 'D'].includes(character.rating);
 
-    // 普通哥布林 (所有角色都可以生育)
+    // 普通衍生物 (所有角色都可以生育)
     const normalGoblins = this.calculateGoblinCount(5, 10, totalBonus);
     if (normalGoblins > 0) {
       records.push({
-        type: '普通哥布林',
+        type: '普通衍生物',
         count: normalGoblins,
         date: new Date(),
         round: currentRound,
@@ -33,12 +33,12 @@ export class BreedingService {
       totalOffspring += normalGoblins;
     }
 
-    // 哥布林战士 (B级以上角色可以生育)
+    // 衍生物战士 (B级以上角色可以生育)
     if (canBreedWarrior) {
       const warriorGoblins = this.calculateGoblinCount(3, 5, totalBonus);
       if (warriorGoblins > 0) {
         records.push({
-          type: '哥布林战士',
+          type: '衍生物战士',
           count: warriorGoblins,
           date: new Date(),
           round: currentRound,
@@ -47,12 +47,12 @@ export class BreedingService {
       }
     }
 
-    // 哥布林萨满 (只有S和A级角色可以生育)
+    // 衍生物萨满 (只有S和A级角色可以生育)
     if (canBreedAll) {
       const shamanGoblins = this.calculateGoblinCount(2, 4, totalBonus);
       if (shamanGoblins > 0) {
         records.push({
-          type: '哥布林萨满',
+          type: '衍生物萨满',
           count: shamanGoblins,
           date: new Date(),
           round: currentRound,
@@ -61,12 +61,12 @@ export class BreedingService {
       }
     }
 
-    // 哥布林圣骑士 (只有S和A级角色可以生育)
+    // 衍生物圣骑士 (只有S和A级角色可以生育)
     if (canBreedAll) {
       const paladinGoblins = this.calculateGoblinCount(1, 3, totalBonus);
       if (paladinGoblins > 0) {
         records.push({
-          type: '哥布林圣骑士',
+          type: '衍生物圣骑士',
           count: paladinGoblins,
           date: new Date(),
           round: currentRound,
@@ -84,7 +84,7 @@ export class BreedingService {
   }
 
   /**
-   * 计算特定类型哥布林的数量
+   * 计算特定类型衍生物的数量
    * @param minCount 最小数量
    * @param maxCount 最大数量
    * @param bonus 加成值
@@ -105,13 +105,13 @@ export class BreedingService {
     switch (rating) {
       case 'S':
       case 'A':
-        return '可生育：普通哥布林、哥布林战士、哥布林萨满、哥布林圣骑士';
+        return '可生育：普通衍生物、衍生物战士、衍生物萨满、衍生物圣骑士';
       case 'B':
       case 'C':
       case 'D':
-        return '可生育：普通哥布林、哥布林战士';
+        return '可生育：普通衍生物、衍生物战士';
       default:
-        return '可生育：普通哥布林';
+        return '可生育：普通衍生物';
     }
   }
 
@@ -133,10 +133,10 @@ export class BreedingService {
    */
   static getBreedingStats(records: BreedingRecord[]): { [key in GoblinType]: number } {
     const stats: { [key in GoblinType]: number } = {
-      普通哥布林: 0,
-      哥布林战士: 0,
-      哥布林萨满: 0,
-      哥布林圣骑士: 0,
+      普通衍生物: 0,
+      衍生物战士: 0,
+      衍生物萨满: 0,
+      衍生物圣骑士: 0,
     };
 
     records.forEach(record => {
@@ -172,17 +172,17 @@ export class BreedingService {
 
     const messages: string[] = [];
 
-    // 降低奴隶生育率：每个奴隶生育2-4个普通哥布林（原来是5-10个）
+    // 降低奴隶生育率：每个奴隶生育2-4个普通衍生物（原来是5-10个）
     const goblinsPerSlave = Math.floor(Math.random() * 3) + 2; // 2-4个
     const totalNewGoblins = slaveCount * goblinsPerSlave;
 
-    // 提高奴隶死亡率：40-70%（原来是20-40%）
+    // 提高奴隶逃跑率：40-70%（原来是20-40%）
     const deathRate = (Math.random() * 0.3 + 0.4) * 100; // 40-70%
     const deadSlaves = Math.floor((slaveCount * deathRate) / 100);
     const remainingSlaves = slaveCount - deadSlaves;
 
-    messages.push(`奴隶们生育了 ${totalNewGoblins} 个普通哥布林`);
-    messages.push(`${deadSlaves} 个奴隶死亡 (死亡率: ${deathRate.toFixed(1)}%)`);
+    messages.push(`奴隶们生育了 ${totalNewGoblins} 个普通衍生物`);
+    messages.push(`${deadSlaves} 个奴隶逃跑 (逃跑率: ${deathRate.toFixed(1)}%)`);
     messages.push(`剩余奴隶: ${remainingSlaves} 个`);
 
     return {
