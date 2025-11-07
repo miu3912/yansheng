@@ -227,7 +227,7 @@
                     :key="type"
                     class="breeding-stat"
                   >
-                    <span class="goblin-type">{{ type }}</span>
+                    <span class="goblin-type">{{ getGoblinTypeName(type) }}</span>
                     <span class="goblin-count">x{{ count }}</span>
                   </div>
                 </div>
@@ -592,6 +592,16 @@ const getFertilityClass = (fertility: number, maxFertility: number) => {
 // 获取生育统计
 const getBreedingStats = (breedingRecords: any[]) => {
   return BreedingService.getBreedingStats(breedingRecords);
+};
+  // 将哥布林类型名称转换为衍生物名称
+const getGoblinTypeName = (originalType: string) => {
+  const typeMapping: Record<string, string> = {
+    '普通哥布林': '普通衍生物',
+    '哥布林战士': '精英衍生物',
+    '哥布林萨满': '魔导衍生物',
+    '哥布林圣骑士': '神圣衍生物'
+  };
+  return typeMapping[originalType] || originalType;
 };
 
 // 获取敏感点（只返回敏感的那个部位）
