@@ -88,10 +88,10 @@ export function getRatingLevelMultiplier(rating: string): number {
 }
 
 /**
- * 计算普通哥布林的最大数量
+ * 计算普通衍生物的最大数量
  * @param level 人物等级
  * @param rating 人物评级
- * @returns 最大普通哥布林数量
+ * @returns 最大普通衍生物数量
  */
 export function calculateMaxNormalGoblins(level: number, rating: string): number {
   const multiplier = getRatingLevelMultiplier(rating);
@@ -99,10 +99,10 @@ export function calculateMaxNormalGoblins(level: number, rating: string): number
 }
 
 /**
- * 计算特殊哥布林的最大数量（战士/萨满/圣骑士总计）
+ * 计算特殊衍生物的最大数量（战士/萨满/圣骑士总计）
  * @param level 人物等级
  * @param rating 人物评级
- * @returns 最大特殊哥布林数量
+ * @returns 最大特殊衍生物数量
  */
 export function calculateMaxSpecialGoblins(level: number, rating: string): number {
   const multiplier = getRatingLevelMultiplier(rating);
