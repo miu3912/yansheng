@@ -7,9 +7,9 @@ import { UNIT_DATA_CSV, UnitDataParser } from './单位数据解析器';
 export const ALL_UNIT_CHARACTERS = UnitDataParser.parseFromCSV(UNIT_DATA_CSV);
 
 /**
- * 哥布林单位数据
+ * 衍生物单位数据
  */
-export const GOBLIN_UNIT_CHARACTERS = UnitDataParser.getUnitsByRace('哥布林', ALL_UNIT_CHARACTERS);
+export const GOBLIN_UNIT_CHARACTERS = UnitDataParser.getUnitsByRace('衍生物', ALL_UNIT_CHARACTERS);
 
 /**
  * 人类单位数据
