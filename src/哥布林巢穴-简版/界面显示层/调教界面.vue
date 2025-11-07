@@ -649,12 +649,12 @@ const updateTrainingCharactersCount = () => {
   }
 };
 
-// 同步繁殖间占用信息到巢穴模块
+// 同步产卵间占用信息到巢穴模块
 const syncBreedingRoomInfo = () => {
   try {
     const breedingRoomInfo: any[] = [];
 
-    // 遍历所有人物，找出占用繁殖间的人物
+    // 遍历所有人物，找出占用产卵间的人物
     characters.value.forEach(char => {
       if (char.locationId && char.locationId.startsWith('breeding-')) {
         breedingRoomInfo.push({
@@ -679,16 +679,16 @@ const syncBreedingRoomInfo = () => {
       },
     });
 
-    console.log('繁殖间占用信息已同步到巢穴模块');
+    console.log('产卵间占用信息已同步到巢穴模块');
   } catch (error) {
-    console.error('同步繁殖间信息失败:', error);
+    console.error('同步产卵间信息失败:', error);
   }
 };
 
 // 保存调教数据
 const saveTrainingData = () => {
   try {
-    // 同步人物状态和繁殖间信息
+    // 同步人物状态和产卵间信息
     syncCharacterStatuses();
     syncBreedingRoomInfo();
 
@@ -899,7 +899,7 @@ const startFertility = async (character: Character) => {
   if (availableBreedingRooms.length === 0) {
     // 返还行动力（没有可用设施）
     actionPointsService.refundActionPoints('singleBreeding');
-    toastRef.value?.warning('没有可用的交配间，请先在巢穴界面建设繁殖间！', { title: '缺少设施', duration: 4000 });
+    toastRef.value?.warning('没有可用的交配间，请先在巢穴界面建设产卵间！', { title: '缺少设施', duration: 4000 });
     showCharacterMenu.value = false;
     return;
   }
@@ -2080,7 +2080,7 @@ const getStatusText = (status: string) => {
   const statusMap: Record<string, string> = {
     imprisoned: '关押中',
     training: '调教中',
-    breeding: '交配中',
+    breeding: '产卵中',
     surrendered: '已堕落',
     deployed: '已编制',
   };
@@ -2163,16 +2163,16 @@ const batchBreeding = async () => {
   if (availableBreedingRooms.length === 0) {
     // 返还行动力（没有可用设施）
     actionPointsService.refundActionPoints('batchBreeding');
-    toastRef.value?.warning('没有可用的交配间，请先在巢穴界面建设繁殖间！', { title: '缺少设施', duration: 4000 });
+    toastRef.value?.warning('没有可用的交配间，请先在巢穴界面建设产卵间！', { title: '缺少设施', duration: 4000 });
     return;
   }
 
-  // 如果繁殖间数量不足，显示确认框
+  // 如果产卵间数量不足，显示确认框
   if (availableBreedingRooms.length < eligibleCharacters.length) {
     const confirmed = await ConfirmService.showWarning(
       `检测到产卵间数量不足！`,
       '确认批量生育',
-      `当前有 ${eligibleCharacters.length} 个人物符合生育条件，但只有 ${availableBreedingRooms.length} 个繁殖间可用。\n\n继续操作将按优先级为前 ${availableBreedingRooms.length} 个人物分配繁殖间，剩余 ${eligibleCharacters.length - availableBreedingRooms.length} 个人物将无法进行生育。\n\n是否继续？`,
+      `当前有 ${eligibleCharacters.length} 个人物符合生育条件，但只有 ${availableBreedingRooms.length} 个产卵间可用。\n\n继续操作将按优先级为前 ${availableBreedingRooms.length} 个人物分配产卵间，剩余 ${eligibleCharacters.length - availableBreedingRooms.length} 个人物将无法进行生育。\n\n是否继续？`,
     );
 
     if (!confirmed) {
