@@ -37,11 +37,11 @@ export type CharacterStatus =
 /** 人物评级枚举 */
 export type CharacterRating = 'S' | 'A' | 'B' | 'C' | 'D';
 
-/** 哥布林类型枚举 */
-export type GoblinType = '普通哥布林' | '哥布林战士' | '哥布林萨满' | '哥布林圣骑士';
+/** 衍生物类型枚举 */
+export type GoblinType = '普通衍生物' | '衍生物战士' | '衍生物萨满' | '衍生物圣骑士';
 
 /** 种族类型枚举 */
-export type RaceType = '人类' | '狐族' | '永恒精灵' | '黑暗精灵' | '哥布林' | '亡灵' | '天使' | '魔族';
+export type RaceType = '人类' | '狐族' | '永恒精灵' | '黑暗精灵' | '衍生物' | '亡灵' | '天使' | '魔族';
 
 /** 出身等级枚举 */
 export type BackgroundType = '平民' | '贵族' | '王族';
@@ -64,13 +64,13 @@ export interface CharacterAttributes {
 
 /** 部队编制信息 */
 export interface TroopDeployment {
-  /** 普通哥布林数量 */
+  /** 普通衍生物数量 */
   normalGoblins: number;
-  /** 哥布林战士数量 */
+  /** 衍生物战士数量 */
   warriorGoblins: number;
-  /** 哥布林萨满数量 */
+  /** 衍生物萨满数量 */
   shamanGoblins: number;
-  /** 哥布林圣骑士数量 */
+  /** 衍生物圣骑士数量 */
   paladinGoblins: number;
 }
 
@@ -142,7 +142,7 @@ export interface CharacterLifeStory {
 
 /** 生育记录 */
 export interface BreedingRecord {
-  type: GoblinType; // 哥布林类型
+  type: GoblinType; // 衍生物类型
   count: number; // 数量
   date: Date; // 日期
   round: number; // 回合
@@ -222,7 +222,7 @@ export interface Character {
   autoBreedEnabled?: boolean;
 
   // ========== 战斗属性 ==========
-  /** 等级（决定可下辖哥布林数量） */
+  /** 等级（决定可下辖衍生物数量） */
   level: number;
   /** 人物基础五维属性 */
   attributes: CharacterAttributes;
