@@ -54,10 +54,10 @@ export class FormationService {
           if (troops) {
             // 将英文键名映射为中文名称
             const troopTypeMap: { [key: string]: string } = {
-              normalGoblins: '普通哥布林',
-              warriorGoblins: '哥布林战士',
-              shamanGoblins: '哥布林萨满',
-              paladinGoblins: '哥布林圣骑士',
+              normalGoblins: '普通衍生物',
+              warriorGoblins: '衍生物战士',
+              shamanGoblins: '衍生物萨满',
+              paladinGoblins: '衍生物圣骑士',
             };
 
             Object.entries(troops).forEach(([type, count]) => {
@@ -271,10 +271,10 @@ export class FormationService {
 
             // 保存部队编制信息
             const troopDeployment: TroopDeployment = {
-              normalGoblins: captain.troops.普通哥布林 || 0,
-              warriorGoblins: captain.troops.哥布林战士 || 0,
-              shamanGoblins: captain.troops.哥布林萨满 || 0,
-              paladinGoblins: captain.troops.哥布林圣骑士 || 0,
+              normalGoblins: captain.troops.普通衍生物 || 0,
+              warriorGoblins: captain.troops.衍生物战士 || 0,
+              shamanGoblins: captain.troops.衍生物萨满 || 0,
+              paladinGoblins: captain.troops.衍生物圣骑士 || 0,
             };
             character.troopDeployment = troopDeployment;
             // 保存位置信息（1-6）
@@ -343,10 +343,10 @@ export class FormationService {
               rating: character.rating || 'C',
               isUsed: true,
               troops: {
-                普通哥布林: character.troopDeployment.normalGoblins,
-                哥布林战士: character.troopDeployment.warriorGoblins,
-                哥布林萨满: character.troopDeployment.shamanGoblins,
-                哥布林圣骑士: character.troopDeployment.paladinGoblins,
+                普通衍生物: character.troopDeployment.normalGoblins,
+                衍生物战士: character.troopDeployment.warriorGoblins,
+                衍生物萨满: character.troopDeployment.shamanGoblins,
+                衍生物圣骑士: character.troopDeployment.paladinGoblins,
               },
             };
             captainSlots[position] = captain;
