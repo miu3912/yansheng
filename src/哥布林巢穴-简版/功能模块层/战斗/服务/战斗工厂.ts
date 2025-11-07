@@ -155,7 +155,7 @@ export class BattleFactory {
   }
 
   /**
-   * 创建哥布林部队（受等级限制）
+   * 创建衍生物部队（受等级限制）
    */
   public static createGoblinArmy(composition: {
     grunts?: number;
@@ -165,31 +165,31 @@ export class BattleFactory {
   }): BattleUnit[] {
     const army: BattleUnit[] = [];
 
-    // 创建各种哥布林单位
+    // 创建各种衍生物单位
     if (composition.grunts) {
       for (let i = 0; i < composition.grunts; i++) {
-        const unit = this.createBattleUnit('哥布林');
+        const unit = this.createBattleUnit('衍生物');
         if (unit) army.push(unit);
       }
     }
 
     if (composition.warriors) {
       for (let i = 0; i < composition.warriors; i++) {
-        const unit = this.createBattleUnit('哥布林战士');
+        const unit = this.createBattleUnit('衍生物战士');
         if (unit) army.push(unit);
       }
     }
 
     if (composition.shamans) {
       for (let i = 0; i < composition.shamans; i++) {
-        const unit = this.createBattleUnit('哥布林萨满');
+        const unit = this.createBattleUnit('衍生物萨满');
         if (unit) army.push(unit);
       }
     }
 
     if (composition.paladins) {
       for (let i = 0; i < composition.paladins; i++) {
-        const unit = this.createBattleUnit('哥布林圣骑士');
+        const unit = this.createBattleUnit('衍生物圣骑士');
         if (unit) army.push(unit);
       }
     }
@@ -198,7 +198,7 @@ export class BattleFactory {
   }
 
   /**
-   * 根据玩家等级限制创建哥布林部队
+   * 根据玩家等级限制创建衍生物部队
    * 等级越高，可以指挥的单位数量越多
    */
   public static createGoblinArmyWithLevelLimit(
@@ -633,7 +633,7 @@ export class BattleFactory {
   }
 
   /**
-   * 创建标准哥布林巢穴战斗
+   * 创建标准衍生物巢穴战斗
    */
   public static createGoblinNestBattle(goblinArmy: BattleUnit[], enemyCount: number = 3): NewBattleSystem {
     const enemies: BattleUnit[] = [];
@@ -755,15 +755,15 @@ export class BattleFactory {
   }
 
   /**
-   * 根据哥布林类型获取单位名称
+   * 根据衍生物类型获取单位名称
    */
   private static getGoblinUnitNameByType(type: string): string {
     const typeMapping: { [key: string]: string } = {
-      grunt: '普通哥布林',
-      warrior: '哥布林战士',
-      shaman: '哥布林萨满',
-      paladin: '哥布林圣骑士',
+      grunt: '普通衍生物',
+      warrior: '衍生物战士',
+      shaman: '衍生物萨满',
+      paladin: '衍生物圣骑士',
     };
-    return typeMapping[type] || '普通哥布林';
+    return typeMapping[type] || '普通衍生物';
   }
 }
