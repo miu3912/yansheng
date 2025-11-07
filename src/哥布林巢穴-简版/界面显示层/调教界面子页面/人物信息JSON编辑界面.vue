@@ -62,7 +62,7 @@ const fieldNameMap: Record<string, string> = {
   loyalty: '堕落值',
   stamina: '当前体力',
   fertility: '当前生育力',
-  offspring: '后代数量',
+  offspring: '产卵数量',
   maxStamina: '最大体力（不超过200）',
   maxFertility: '最大生育力（不超过200）',
   rating: '评级（S/A/B/C/D）',
@@ -77,13 +77,6 @@ const fieldNameMap: Record<string, string> = {
 
   // 训练信息
   lastTraining: '最后训练时间',
-
-  // 生育记录
-  breedingRecords: '生育记录',
-  type: '类型',
-  count: '数量',
-  date: '日期',
-  round: '回合',
 
   // 详细人物信息
   race: '种族',
