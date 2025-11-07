@@ -17,10 +17,10 @@ export interface LevelUpResult {
  */
 export class CharacterLevelUpService {
   /**
-   * 献祭哥布林升级人物等级
+   * 献祭衍生物升级人物等级
    * 根据固定数量计算可以升多少级（每种类型独立计算，取最大值）
    * @param characterId 目标人物ID
-   * @param sacrificedGoblins 献祭的哥布林数量，按类型分组
+   * @param sacrificedGoblins 献祭的衍生物数量，按类型分组
    * @returns 升级结果
    */
   static sacrificeGoblinsForLevel(
@@ -57,7 +57,7 @@ export class CharacterLevelUpService {
       const currentLevel = character.level ?? Math.floor((character.offspring ?? 0) / 10) ?? 1;
 
       // 计算可以升多少级（每种类型独立计算，叠加总和）
-      // 固定数量要求：普通哥布林100只/级，哥布林战士20只/级，哥布林萨满10只/级，哥布林圣骑士5只/级
+      // 固定数量要求：普通衍生物100只/级，衍生物战士20只/级，衍生物萨满10只/级，衍生物圣骑士5只/级
       const goblinRequirements = {
         normalGoblins: 100,
         warriorGoblins: 20,
@@ -86,7 +86,7 @@ export class CharacterLevelUpService {
           data: gameData.training,
         });
 
-        console.log(`${character.name} 献祭哥布林升级成功: ${currentLevel} -> ${newLevel}（提升${levelUps}级）`);
+        console.log(`${character.name} 献祭衍生物升级成功: ${currentLevel} -> ${newLevel}（提升${levelUps}级）`);
         return {
           success: true,
           oldLevel: currentLevel,
@@ -94,7 +94,7 @@ export class CharacterLevelUpService {
           message: `${character.name} 等级提升: ${currentLevel} -> ${newLevel}（提升${levelUps}级）`,
         };
       } else {
-        console.log(`${character.name} 献祭哥布林数量不足，无法升级。当前等级: ${currentLevel}`);
+        console.log(`${character.name} 献祭衍生物数量不足，无法升级。当前等级: ${currentLevel}`);
         return {
           success: false,
           oldLevel: currentLevel,
@@ -103,7 +103,7 @@ export class CharacterLevelUpService {
         };
       }
     } catch (error) {
-      console.error('献祭哥布林升级失败:', error);
+      console.error('献祭衍生物升级失败:', error);
       return {
         success: false,
         oldLevel: 1,
