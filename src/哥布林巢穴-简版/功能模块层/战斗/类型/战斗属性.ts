@@ -20,13 +20,13 @@ export interface BattleAttributes {
  * 部队编制信息
  */
 export interface TroopDeployment {
-  /** 普通哥布林数量 */
+  /** 普通衍生物数量 */
   normalGoblins?: number;
-  /** 哥布林战士数量 */
+  /** 衍生物战士数量 */
   warriorGoblins?: number;
-  /** 哥布林萨满数量 */
+  /** 衍生物萨满数量 */
   shamanGoblins?: number;
-  /** 哥布林圣骑士数量 */
+  /** 衍生物圣骑士数量 */
   paladinGoblins?: number;
   /** 敌方部队数量 */
   count?: number;
