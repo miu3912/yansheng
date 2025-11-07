@@ -57,10 +57,10 @@ export class ResourceFormatService {
       food: '食物',
       threat: '威胁度',
       slaves: '俘虏',
-      normalGoblins: '普通哥布林',
-      warriorGoblins: '战士哥布林',
-      shamanGoblins: '萨满哥布林',
-      paladinGoblins: '圣骑士哥布林',
+      normalGoblins: '普通衍生物',
+      warriorGoblins: '战士衍生物',
+      shamanGoblins: '萨满衍生物',
+      paladinGoblins: '圣骑士衍生物',
       trainingSlaves: '调教人物',
       rounds: '回合',
     };
@@ -84,16 +84,16 @@ export class ResourceFormatService {
   }
 
   /**
-   * 将哥布林类型映射到资源名称
-   * @param goblinType 哥布林类型（中文）
+   * 将衍生物类型映射到资源名称
+   * @param goblinType 衍生物类型（中文）
    * @returns 资源类型（英文）
    */
   static mapGoblinTypeToResource(goblinType: string): string {
     const mapping: Record<string, string> = {
-      普通哥布林: 'normalGoblins',
-      哥布林战士: 'warriorGoblins',
-      哥布林萨满: 'shamanGoblins',
-      哥布林圣骑士: 'paladinGoblins',
+      普通衍生物: 'normalGoblins',
+      衍生物战士: 'warriorGoblins',
+      衍生物萨满: 'shamanGoblins',
+      衍生物圣骑士: 'paladinGoblins',
     };
     return mapping[goblinType] || goblinType;
   }
