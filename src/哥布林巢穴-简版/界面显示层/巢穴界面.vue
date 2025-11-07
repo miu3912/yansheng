@@ -28,7 +28,7 @@
 
     <!-- 建筑内容区域 -->
     <div class="building-content">
-      <!-- 产卵间建筑槽位 -->
+      <!-- 产卵室建筑槽位 -->
       <div v-if="activeTab === 'breeding'" class="building-section">
         <div class="building-scroll-container">
           <div class="building-grid">
@@ -318,12 +318,12 @@ const currentSacrificeSlotIndex = ref(-1);
 // ==================== 建筑数据定义 ====================
 
 /**
- * 产卵间建筑列表
+ * 产卵室建筑列表
  */
 const breedingBuildings: Building[] = [
   {
     id: 'breeding',
-    name: '产卵间',
+    name: '产卵室',
     icon: '👶',
     description: '用于俘虏孵蛋产卵衍生物',
     cost: { gold: 50, food: 30 },
@@ -393,7 +393,7 @@ const resourceBuildings: Building[] = [
 const availableBuildings = computed(() => {
   const buildings = activeTab.value === 'breeding' ? breedingBuildings : resourceBuildings;
 
-  // 为产卵间计算动态成本
+  // 为产卵室计算动态成本
   if (activeTab.value === 'breeding') {
     return buildings.map(building => {
       if (building.id === 'breeding') {
@@ -428,7 +428,7 @@ const totalIncome = computed(() => {
   let totalGold = 0;
   let totalFood = 0;
 
-  // 计算产卵间建筑收入
+  // 计算产卵室建筑收入
   breedingSlots.value.forEach(slot => {
     if (slot.building && slot.building.income) {
       if (slot.building.income.gold) totalGold += slot.building.income.gold;
@@ -466,9 +466,9 @@ const totalIncome = computed(() => {
 const initializeSlots = () => {
   console.log('开始初始化槽位...');
 
-  // 初始化产卵间槽位
+  // 初始化产卵室槽位
   breedingSlots.value = [];
-  // 前两个槽位默认开通，首槽位放置产卵间
+  // 前两个槽位默认开通，首槽位放置产卵室
   breedingSlots.value.push({
     building: breedingBuildings.find(b => b.id === 'breeding') || null,
     unlocked: true,
@@ -497,7 +497,7 @@ const initializeSlots = () => {
   });
 
   console.log('槽位初始化完成:');
-  console.log('产卵间槽位:', breedingSlots.value);
+  console.log('产卵室槽位:', breedingSlots.value);
   console.log('资源建筑槽位:', resourceSlots.value);
 };
 
@@ -522,7 +522,7 @@ const addNewSlot = (type: SlotType) => {
  * 获取槽位开通成本
  */
 const getSlotCost = (index: number): SlotCost => {
-  // 产卵间和资源建筑使用相同的槽位开通成本逻辑：前2个槽位免费，其后逐渐增加
+  // 产卵室和资源建筑使用相同的槽位开通成本逻辑：前2个槽位免费，其后逐渐增加
   const baseGold = 200;
   const baseFood = 100;
   const multiplier = Math.max(0, index - 1); // 前2个槽位免费
@@ -581,7 +581,7 @@ const canUnlockSlot = (index: number, type: SlotType) => {
   const slots = type === 'breeding' ? breedingSlots.value : resourceSlots.value;
 
   if (type === 'breeding') {
-    // 产卵间：与资源建筑相同，前2个槽位默认开通
+    // 产卵室：与资源建筑相同，前2个槽位默认开通
     if (index < 2) return true;
 
     // 检查前面的槽位是否都已开通
@@ -613,7 +613,7 @@ const isNextUnlockSlot = (index: number, type: SlotType) => {
   if (slots[index].unlocked) return false;
 
   if (type === 'breeding') {
-    // 产卵间：与资源建筑相同，从索引2开始查找第一个未开通的槽位
+    // 产卵室：与资源建筑相同，从索引2开始查找第一个未开通的槽位
     for (let i = 2; i < slots.length; i++) {
       if (!slots[i].unlocked) {
         return i === index;
@@ -677,7 +677,7 @@ const canBuild = (building: Building) => {
   }
 
   if (building.id === 'breeding') {
-    // 产卵间成本基于现有数量
+    // 产卵室成本基于现有数量
     const existingBreedingCount = breedingSlots.value.filter(slot => slot.building?.id === 'breeding').length;
     const dynamicCost = {
       gold: building.cost.gold + existingBreedingCount * 25,
@@ -707,7 +707,7 @@ const selectBuilding = (building: Building) => {
     // 显示资源不足提示
     let cost = building.cost;
     if (building.id === 'breeding') {
-      // 产卵间使用动态成本
+      // 产卵室使用动态成本
       const existingBreedingCount = breedingSlots.value.filter(slot => slot.building?.id === 'breeding').length;
       cost = {
         gold: building.cost.gold + existingBreedingCount * 25,
@@ -726,7 +726,7 @@ const selectBuilding = (building: Building) => {
     // 计算实际成本
     let actualCost = building.cost;
     if (building.id === 'breeding') {
-      // 产卵间使用动态成本
+      // 产卵室使用动态成本
       const existingBreedingCount = breedingSlots.value.filter(slot => slot.building?.id === 'breeding').length;
       actualCost = {
         gold: building.cost.gold + existingBreedingCount * 25,
@@ -783,7 +783,7 @@ const saveBuildingData = (): void => {
       resourceSlots: resourceSlots.value,
       activeTab: activeTab.value,
       totalIncome: currentTotalIncome,
-      breedingRoomInfo: [], // 产卵间信息由调教界面同步管理
+      breedingRoomInfo: [], // 产卵室信息由调教界面同步管理
     };
 
     console.log('保存巢穴数据到模块化存档系统:', nestData);
@@ -888,7 +888,7 @@ onMounted(() => {
 const getBreedingRoomOccupant = (roomIndex: number) => {
   const roomId = `breeding-${roomIndex}`;
 
-  // 首先从巢穴模块的产卵间信息中查找
+  // 首先从巢穴模块的产卵室信息中查找
   try {
     const nestData = modularSaveManager.getModuleData({ moduleName: 'nest' }) as any;
     if (nestData && nestData.breedingRoomInfo) {
@@ -902,7 +902,7 @@ const getBreedingRoomOccupant = (roomIndex: number) => {
       }
     }
   } catch (error) {
-    console.error('从巢穴模块获取产卵间信息失败:', error);
+    console.error('从巢穴模块获取产卵室信息失败:', error);
   }
 
   // 如果巢穴模块中没有，则从人物数据中查找（兼容性）
@@ -926,13 +926,13 @@ const loadCharacters = () => {
 };
 
 /**
- * 同步产卵间占用信息
+ * 同步产卵室占用信息
  */
 const syncBreedingRoomInfo = () => {
   try {
     const breedingRoomInfo: any[] = [];
 
-    // 遍历所有人物，找出占用产卵间的人物
+    // 遍历所有人物，找出占用产卵室的人物
     characters.value.forEach(char => {
       if (char.locationId && char.locationId.startsWith('breeding-')) {
         breedingRoomInfo.push({
@@ -957,9 +957,9 @@ const syncBreedingRoomInfo = () => {
       },
     });
 
-    console.log('巢穴界面：产卵间占用信息已同步:', breedingRoomInfo);
+    console.log('巢穴界面：产卵室占用信息已同步:', breedingRoomInfo);
   } catch (error) {
-    console.error('巢穴界面：同步产卵间信息失败:', error);
+    console.error('巢穴界面：同步产卵室信息失败:', error);
   }
 };
 
@@ -970,7 +970,7 @@ onActivated(() => {
   console.log('巢穴界面激活');
   loadBuildingData();
   loadCharacters();
-  // 同步产卵间信息，确保显示最新状态
+  // 同步产卵室信息，确保显示最新状态
   syncBreedingRoomInfo();
 });
 
