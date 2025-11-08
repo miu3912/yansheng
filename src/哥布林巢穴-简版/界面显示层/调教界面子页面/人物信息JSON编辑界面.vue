@@ -62,7 +62,7 @@ const fieldNameMap: Record<string, string> = {
   loyalty: '堕落值',
   stamina: '当前体力',
   fertility: '当前生育力',
-  offspring: '产卵数量',
+  offspring: '后代数量',
   maxStamina: '最大体力（不超过200）',
   maxFertility: '最大生育力（不超过200）',
   rating: '评级（S/A/B/C/D）',
@@ -77,6 +77,13 @@ const fieldNameMap: Record<string, string> = {
 
   // 训练信息
   lastTraining: '最后训练时间',
+
+  // 生育记录
+  breedingRecords: '生育记录',
+  type: '类型',
+  count: '数量',
+  date: '日期',
+  round: '回合',
 
   // 详细人物信息
   race: '种族',
@@ -130,10 +137,10 @@ const fieldNameMap: Record<string, string> = {
   currentState: '当前状态',
 
   // 部队编制子字段
-  normalGoblins: '普通衍生物',
-  warriorGoblins: '衍生物战士',
-  shamanGoblins: '衍生物萨满',
-  paladinGoblins: '衍生物圣骑士',
+  normalGoblins: '普通哥布林',
+  warriorGoblins: '哥布林战士',
+  shamanGoblins: '哥布林萨满',
+  paladinGoblins: '哥布林圣骑士',
 
   // 额外附加信息
   additionalInformation: '额外附加信息',
