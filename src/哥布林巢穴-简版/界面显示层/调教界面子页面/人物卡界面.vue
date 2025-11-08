@@ -45,7 +45,7 @@
                 <div class="character-level-badge">
                   <span class="level-icon">LV.</span>
                   <span class="level-value">{{
-                    internalCharacter.level ?? Math.floor((internalCharacter.产卵数量 ?? 0) / 10) ?? 1
+                    internalCharacter.level ?? Math.floor((internalCharacter.offspring ?? 0) / 10) ?? 1
                   }}</span>
                 </div>
               </div>
@@ -207,10 +207,32 @@
               <div class="stat-detail">
                 <div class="stat-label">
                   <span class="stat-icon">👶</span>
-                  产卵数量：
+                  后代数量
                 </div>
-                <div class="stat-value-detail">{{ internalCharacter.产卵数量 }}</div>
+                <div class="stat-value-detail">{{ internalCharacter.offspring }}</div>
               </div>
+
+              <!-- 生育记录显示 -->
+              <div
+                v-if="internalCharacter.breedingRecords && internalCharacter.breedingRecords.length > 0"
+                class="breeding-records"
+              >
+                <h4>
+                  <span class="section-icon">👶</span>
+                  生育记录
+                </h4>
+                <div class="breeding-stats">
+                  <div
+                    v-for="(count, type) in getBreedingStats(internalCharacter.breedingRecords)"
+                    :key="type"
+                    class="breeding-stat"
+                  >
+                    <span class="goblin-type">{{ type }}</span>
+                    <span class="goblin-count">x{{ count }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <!-- 衣着信息 -->
             <div v-if="internalCharacter.appearance?.clothing" class="detail-section clothing-section">
