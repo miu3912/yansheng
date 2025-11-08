@@ -4,7 +4,7 @@
       <div class="content-wrapper">
         <header class="header">
           <div class="header-center">
-            <h1 class="main-title">衍生圣巢</h1>
+            <h1 class="main-title">衍生之圣巢</h1>
           </div>
         </header>
 
@@ -245,7 +245,7 @@ const food = computed(() => resources.value.food);
 const threat = computed(() => resources.value.threat);
 const slaves = computed(() => resources.value.slaves);
 
-// 衍生物数量
+// 哥布林数量
 const normalGoblins = computed(() => resources.value.normalGoblins);
 const warriorGoblins = computed(() => resources.value.warriorGoblins);
 const shamanGoblins = computed(() => resources.value.shamanGoblins);
@@ -710,12 +710,12 @@ const endRound = async () => {
 
     console.log('奴隶生育结果:', slaveBreedingResult);
 
-    // 更新奴隶数量（减去死亡数量）
+    // 更新奴隶数量（减去逃跑数量）
     if (slaveBreedingResult.deadSlaves > 0) {
-      modularSaveManager.consumeResource('slaves', slaveBreedingResult.deadSlaves, '奴隶死亡');
+      modularSaveManager.consumeResource('slaves', slaveBreedingResult.deadSlaves, '奴隶逃跑');
     }
 
-    // 添加新生育的普通衍生物
+    // 添加新生育的普通哥布林
     if (slaveBreedingResult.newGoblins > 0) {
       modularSaveManager.addResource('normalGoblins', slaveBreedingResult.newGoblins, '奴隶生育');
     }
@@ -734,12 +734,12 @@ const endRound = async () => {
     // 聚合资源变化
     const aggregatedChanges = aggregateResourceChanges(nestResult.changes);
 
-    // 添加奴隶死亡到资源变化中
+    // 添加奴隶逃跑到资源变化中
     if (slaveBreedingResult.deadSlaves > 0) {
       aggregatedChanges.push({
         type: 'slaves',
         amount: -slaveBreedingResult.deadSlaves,
-        reason: '奴隶死亡',
+        reason: '奴隶逃跑',
       });
     }
 
@@ -783,7 +783,7 @@ const endRound = async () => {
     if (breedingResults && breedingResults.length > 0) {
       const topBreedingResults = breedingResults.slice(0, 2);
       const breedingNames = topBreedingResults.map(result => result.characterName).join('、');
-      titleParts.push(`${breedingNames} 生育了衍生物`);
+      titleParts.push(`${breedingNames} 孵化了衍生物的蛋`);
     } else if (slaveBreedingResult.newGoblins > 0) {
       titleParts.push(`奴隶生育了 ${slaveBreedingResult.newGoblins} 个衍生物`);
     }
