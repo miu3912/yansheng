@@ -8,8 +8,8 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
 // 修正导入路径
-import { modularSaveManager } from '../../../核心层/服务/存档系统/模块化存档服务';
-import { ExperienceLevelUpService } from '../../../核心层/服务/通用服务/经验升级服务';
+import { modularSaveManager } from '../../核心层/服务/存档系统/模块化存档服务';
+import { ExperienceLevelUpService } from '../../核心层/服务/通用服务/经验升级服务';
 import type { Character } from '../../../功能模块层/人物管理/类型/人物类型';
 
 interface Props {
@@ -121,3 +121,4 @@ onMounted(() => {
 <style lang="scss" scoped>
 /* 样式保持不变 */
 </style>
+
