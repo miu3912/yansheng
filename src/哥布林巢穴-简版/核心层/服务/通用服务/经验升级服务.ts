@@ -318,4 +318,5 @@ export class ExperienceLevelUpService {
       return 1;
     }
   }
+
 }
