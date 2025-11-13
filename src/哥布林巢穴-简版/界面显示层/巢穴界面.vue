@@ -1128,6 +1128,16 @@ const handleExperienceConfirm = async (characterId: string, goldAmount: number, 
   
   closeExperienceDialog();
 };
+
+// ==================== 事件发射器 ====================
+
+/**
+ * 事件发射器
+ */
+const eventEmit = (eventName: string, data?: any) => {
+  const event = new CustomEvent(eventName, { detail: data });
+  window.dispatchEvent(event);
+};
 </script>
 
 <style lang="scss" scoped>
