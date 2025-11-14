@@ -8,21 +8,17 @@ on:
 permissions:
   actions: read
   contents: write
-  pull-requests: write  # 添加这个权限
 
 jobs:
   bump_deps:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # 明确指定 token
 
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          
       - name: Setup pnpm
         uses: pnpm/action-setup@v4.1.0
         with:
@@ -44,5 +40,4 @@ jobs:
         with:
           default_author: github_actions
           message: '[bot] bump deps'
-          token: ${{ secrets.GITHUB_TOKEN }}  # 明确指定 token
-          # 移除 pull: true
+          pull: true  # 添加这一行
