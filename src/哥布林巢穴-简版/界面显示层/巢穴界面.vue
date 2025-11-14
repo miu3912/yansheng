@@ -180,7 +180,11 @@
     <SacrificeDialog :show="showSacrificeDialog" @close="closeSacrificeDialog" @confirm="handleSacrificeConfirm" />
 
     <!-- 经验升级对话框 -->
-    <ExperienceLevelUpDialog :show="showExperienceDialog" @close="closeExperienceDialog" @confirm="handleExperienceConfirm" />
+    <ExperienceLevelUpDialog
+      :show="showExperienceDialog"
+      @close="closeExperienceDialog"
+      @confirm="handleExperienceConfirm"
+    />
   </div>
 </template>
 
@@ -1115,7 +1119,7 @@ const closeExperienceDialog = () => {
 const handleExperienceConfirm = async (characterId: string, goldAmount: number, foodAmount: number) => {
   // 调用经验升级服务
   const result = ExperienceLevelUpService.levelUpByResources(characterId, goldAmount, foodAmount);
-  
+
   if (result.success) {
     console.log(result.message);
     // 更新玩家等级
@@ -1125,7 +1129,7 @@ const handleExperienceConfirm = async (characterId: string, goldAmount: number, 
   } else {
     console.error(result.message);
   }
-  
+
   closeExperienceDialog();
 };
 

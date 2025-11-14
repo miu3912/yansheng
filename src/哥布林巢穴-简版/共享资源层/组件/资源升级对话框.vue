@@ -35,7 +35,7 @@ const prediction = ref({
   oldLevel: 0,
   totalCost: { gold: 0, food: 0 },
   canLevelUp: false,
-  message: ''
+  message: '',
 });
 
 // 计算属性
@@ -43,10 +43,7 @@ const availableGold = computed(() => modularSaveManager.resources.value.gold || 
 const availableFood = computed(() => modularSaveManager.resources.value.food || 0);
 
 const canConfirm = computed(() => {
-  return selectedCharacterId.value && 
-         goldAmount.value > 0 && 
-         foodAmount.value > 0 && 
-         prediction.value.canLevelUp;
+  return selectedCharacterId.value && goldAmount.value > 0 && foodAmount.value > 0 && prediction.value.canLevelUp;
 });
 
 // 方法 - 保持不变...
@@ -72,16 +69,16 @@ const resetForm = () => {
     oldLevel: 0,
     totalCost: { gold: 0, food: 0 },
     canLevelUp: false,
-    message: ''
+    message: '',
   };
 };
 
 const updatePrediction = () => {
   if (selectedCharacterId.value && goldAmount.value >= 0 && foodAmount.value >= 0) {
     const result = ExperienceLevelUpService.getLevelUpMessage(
-      selectedCharacterId.value, 
-      goldAmount.value, 
-      foodAmount.value
+      selectedCharacterId.value,
+      goldAmount.value,
+      foodAmount.value,
     );
     prediction.value = result;
   }
@@ -106,12 +103,15 @@ const loadUpgradableCharacters = () => {
 };
 
 // 监听显示状态
-watch(() => props.show, (newVal) => {
-  if (newVal) {
-    loadUpgradableCharacters();
-    resetForm();
-  }
-});
+watch(
+  () => props.show,
+  newVal => {
+    if (newVal) {
+      loadUpgradableCharacters();
+      resetForm();
+    }
+  },
+);
 
 onMounted(() => {
   loadUpgradableCharacters();
@@ -121,4 +121,3 @@ onMounted(() => {
 <style lang="scss" scoped>
 /* 样式保持不变 */
 </style>
-

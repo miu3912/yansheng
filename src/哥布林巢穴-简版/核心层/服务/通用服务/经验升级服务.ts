@@ -64,10 +64,12 @@ export class ExperienceLevelUpService {
       const actualCost = this.getCostForLevelUps(currentLevel, levelUps);
 
       // 验证资源是否足够（使用实际消耗金额）
-      if (!modularSaveManager.hasEnoughResources([
-        { type: 'gold', amount: actualCost.gold, reason: '经验升级' },
-        { type: 'food', amount: actualCost.food, reason: '经验升级' },
-      ])) {
+      if (
+        !modularSaveManager.hasEnoughResources([
+          { type: 'gold', amount: actualCost.gold, reason: '经验升级' },
+          { type: 'food', amount: actualCost.food, reason: '经验升级' },
+        ])
+      ) {
         return {
           success: false,
           oldLevel: currentLevel,
@@ -77,10 +79,12 @@ export class ExperienceLevelUpService {
       }
 
       // 消耗资源
-      if (!modularSaveManager.consumeResources([
-        { type: 'gold', amount: actualCost.gold, reason: `经验升级${levelUps}级` },
-        { type: 'food', amount: actualCost.food, reason: `经验升级${levelUps}级` },
-      ])) {
+      if (
+        !modularSaveManager.consumeResources([
+          { type: 'gold', amount: actualCost.gold, reason: `经验升级${levelUps}级` },
+          { type: 'food', amount: actualCost.food, reason: `经验升级${levelUps}级` },
+        ])
+      ) {
         return {
           success: false,
           oldLevel: currentLevel,
@@ -123,14 +127,14 @@ export class ExperienceLevelUpService {
     let levelUps = 0;
     let remainingGold = goldAmount;
     let remainingFood = foodAmount;
-    
+
     // 限制一次最多升50级，避免计算过于复杂
     const maxLevelUps = Math.min(50, 1000 - currentLevel);
-    
+
     for (let i = 1; i <= maxLevelUps; i++) {
       const targetLevel = currentLevel + i;
       const cost = this.getCostForLevel(targetLevel);
-      
+
       if (remainingGold >= cost.gold && remainingFood >= cost.food) {
         levelUps = i;
         remainingGold -= cost.gold;
@@ -139,7 +143,7 @@ export class ExperienceLevelUpService {
         break;
       }
     }
-    
+
     return levelUps;
   }
 
@@ -149,13 +153,13 @@ export class ExperienceLevelUpService {
   private static getCostForLevelUps(startLevel: number, levelUps: number): { gold: number; food: number } {
     let totalGold = 0;
     let totalFood = 0;
-    
+
     for (let i = 1; i <= levelUps; i++) {
       const cost = this.getCostForLevel(startLevel + i);
       totalGold += cost.gold;
       totalFood += cost.food;
     }
-    
+
     return { gold: totalGold, food: totalFood };
   }
 
@@ -169,20 +173,24 @@ export class ExperienceLevelUpService {
     const baseGold = 1000;
     const baseFood = 500;
     const growthRate = 2.5;
-    
+
     const goldCost = Math.floor(baseGold * Math.pow(growthRate, targetLevel / 10));
     const foodCost = Math.floor(baseFood * Math.pow(growthRate, targetLevel / 10));
-    
+
     return {
       gold: Math.max(1000, goldCost),
-      food: Math.max(500, foodCost)
+      food: Math.max(500, foodCost),
     };
   }
 
   /**
    * 获取升级提示信息
    */
-  static getLevelUpMessage(characterId: string, goldAmount: number, foodAmount: number): {
+  static getLevelUpMessage(
+    characterId: string,
+    goldAmount: number,
+    foodAmount: number,
+  ): {
     levelUps: number;
     predictedLevel: number;
     oldLevel: number;
@@ -318,5 +326,4 @@ export class ExperienceLevelUpService {
       return 1;
     }
   }
-
 }

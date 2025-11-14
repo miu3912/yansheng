@@ -44,9 +44,7 @@
                 <!-- 等级标签 -->
                 <div class="character-level-badge">
                   <span class="level-icon">LV.</span>
-                  <span class="level-value">{{
-                    internalCharacter.level ?? 1
-                  }}</span>
+                  <span class="level-value">{{ internalCharacter.level ?? 1 }}</span>
                 </div>
               </div>
             </div>
