@@ -41,3 +41,4 @@ jobs:
           default_author: github_actions
           message: '[bot] bump deps'
           pull: true  # 添加这一行
+          push: true 
