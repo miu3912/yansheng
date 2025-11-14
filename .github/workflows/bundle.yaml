@@ -12,7 +12,7 @@ on:
 permissions:
   actions: read
   contents: write
-  pull-requests: write  # 添加这个权限
+  pull-requests: write
 
 concurrency:
   group: ${{ github.workflow }}
@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # 明确指定 token
+          token: ${{ secrets.GITHUB_TOKEN }}
           
       - uses: JesseTG/rm@v1.0.3
         with:
@@ -47,10 +47,9 @@ jobs:
         with:
           default_author: github_actions
           message: '[bot] bundle'
-          token: ${{ secrets.GITHUB_TOKEN }}  # 明确指定 token
-          # 移除 pull: true，使用更稳定的配置
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # 先提交再打标签，避免冲突
+      # 自动打版本 tag
       - id: autotag
         uses: phish108/autotag-action@v1.1.64
         with:
@@ -60,39 +59,19 @@ jobs:
       - if: ${{ steps.autotag.outputs.tag != '0.0.0' }}
         run: |
           git push origin ${{ steps.autotag.outputs.tag }} || echo "标签推送失败，继续执行"
-          # 不删除标签，避免权限问题
 
-      # 上传 index.html 到 Cloudflare R2
-      - name: Upload index.html to Cloudflare R2
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          R2_BUCKET: gobgame-pic
-          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      # 跳过 R2 上传（因为缺少 Secrets）
+      - name: Skip R2 Upload (No Secrets)
         run: |
-          # 检查文件是否存在
-          if [ ! -f "dist/哥布林巢穴-简版/index.html" ]; then
-            echo "错误: dist/哥布林巢穴-简版/index.html 不存在"
-            echo "构建输出目录内容:"
-            ls -la dist/ || echo "dist 目录不存在"
-            ls -la dist/哥布林巢穴-简版/ || echo "dist/哥布林巢穴-简版/ 目录不存在"
-            exit 1
-          fi
+          echo "⚠️  跳过 Cloudflare R2 上传：仓库中没有设置必要的 Secrets"
+          echo "如需启用 R2 上传，请在仓库 Settings -> Secrets and variables -> Actions 中添加："
+          echo "- R2_ACCOUNT_ID"
+          echo "- R2_ACCESS_KEY_ID" 
+          echo "- R2_SECRET_ACCESS_KEY"
+          echo "- CLOUDFLARE_API_TOKEN"
+          echo "- CF_ZONE_ID"
 
-          # 使用环境变量直接上传，不需要 aws configure
-          # 添加必要的元数据以确保 HTML 正确显示
-          aws s3 cp dist/哥布林巢穴-简版/index.html "s3://${R2_BUCKET}/index.html" \
-            --endpoint-url "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com" \
-            --content-type "text/html" \
-            --cache-control "no-cache, must-revalidate"
-
-      # 🔹 新增：清理 Cloudflare Edge 缓存
-      - name: Purge Cloudflare Cache
-        env:
-          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+      # 跳过 Cloudflare 缓存清理（因为缺少 Secrets）
+      - name: Skip Cloudflare Cache Purge (No Secrets)
         run: |
-          curl -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
-            -H "Authorization: Bearer ${CF_API_TOKEN}" \
-            -H "Content-Type: application/json" \
-            --data '{"files":["https://kitakamis.online/index.html"]}'
+          echo "⚠️  跳过 Cloudflare 缓存清理：缺少必要的 Secrets"
