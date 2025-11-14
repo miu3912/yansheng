@@ -2,7 +2,7 @@
   <div class="nest-container">
     <!-- 巢穴头部信息 -->
     <div class="nest-header">
-      <h3 class="nest-title">🏰 衍生之圣巢</h3>
+      <h3 class="nest-title">🏰 衍生之圣域</h3>
       <div class="income-summary">
         <div v-if="totalIncome.gold > 0" class="income-item">
           <span class="income-icon">💰</span>
@@ -118,11 +118,6 @@
                   <button class="sacrifice-button" @click.stop="openSacrificeDialog(index)">献祭</button>
                 </div>
 
-                <!-- 经验祭坛特殊交互 -->
-                <div v-if="slot.building.id === 'experience_altar'" class="experience-button-container">
-                  <button class="experience-button" @click.stop="openExperienceDialog(index)">升级</button>
-                </div>
-
                 <button class="remove-button" title="拆除建筑" @click.stop="removeBuilding(index, 'resource')">
                   ×
                 </button>
@@ -178,24 +173,15 @@
 
     <!-- 献祭对话框 -->
     <SacrificeDialog :show="showSacrificeDialog" @close="closeSacrificeDialog" @confirm="handleSacrificeConfirm" />
-
-    <!-- 经验升级对话框 -->
-    <ExperienceLevelUpDialog
-      :show="showExperienceDialog"
-      @close="closeExperienceDialog"
-      @confirm="handleExperienceConfirm"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onActivated, onMounted, ref, watch } from 'vue';
 import SacrificeDialog from '../共享资源层/组件/献祭对话框.vue';
-import ExperienceLevelUpDialog from '../共享资源层/组件/资源升级对话框.vue';
 import { modularSaveManager } from '../核心层/服务/存档系统/模块化存档服务';
 import type { NestModuleData } from '../核心层/服务/存档系统/模块化存档类型';
 import { SacrificeService, type SacrificeAmounts } from '../核心层/服务/通用服务/献祭服务';
-import { ExperienceLevelUpService } from '../核心层/服务/通用服务/经验升级服务';
 import { PlayerLevelService } from '../核心层/服务/通用服务/玩家等级服务';
 import { ConfirmService } from '../核心层/服务/通用服务/确认框服务';
 
@@ -329,12 +315,6 @@ const characters = ref<any[]>([]);
 const showSacrificeDialog = ref(false);
 const currentSacrificeSlotIndex = ref(-1);
 
-// ==================== 经验升级相关数据 ====================
-
-// 经验升级对话框状态
-const showExperienceDialog = ref(false);
-const currentExperienceSlotIndex = ref(-1);
-
 // ==================== 建筑数据定义 ====================
 
 /**
@@ -403,15 +383,6 @@ const resourceBuildings: Building[] = [
     category: 'resource',
     effects: [{ type: 'sacrifice', icon: '🔥', description: '献祭衍生物升级等级' }],
   },
-  {
-    id: 'experience_altar',
-    name: '经验祭坛',
-    icon: '🌟',
-    description: '消耗金币和食物提升人物等级',
-    cost: { gold: 50000, food: 25000 },
-    category: 'resource',
-    effects: [{ type: 'experience', icon: '🌟', description: '消耗资源提升等级' }],
-  },
 ];
 
 // ==================== 计算属性 ====================
@@ -444,11 +415,6 @@ const availableBuildings = computed(() => {
     if (building.id === 'sacrifice_altar') {
       // 检查是否已经有献祭祭坛
       const existingAltarCount = resourceSlots.value.filter(slot => slot.building?.id === 'sacrifice_altar').length;
-      return existingAltarCount === 0; // 如果已经有1个或以上，则不显示
-    }
-    if (building.id === 'experience_altar') {
-      // 检查是否已经有经验祭坛
-      const existingAltarCount = resourceSlots.value.filter(slot => slot.building?.id === 'experience_altar').length;
       return existingAltarCount === 0; // 如果已经有1个或以上，则不显示
     }
     return true;
@@ -710,15 +676,6 @@ const canBuild = (building: Building) => {
     return canAffordBuilding(building.cost);
   }
 
-  // 检查经验祭坛是否已存在（只允许建造1个）
-  if (building.id === 'experience_altar') {
-    const existingAltarCount = resourceSlots.value.filter(slot => slot.building?.id === 'experience_altar').length;
-    if (existingAltarCount >= 1) {
-      return false; // 已经有一个经验祭坛，不能再建造
-    }
-    return canAffordBuilding(building.cost);
-  }
-
   if (building.id === 'breeding') {
     // 产卵室成本基于现有数量
     const existingBreedingCount = breedingSlots.value.filter(slot => slot.building?.id === 'breeding').length;
@@ -741,16 +698,6 @@ const selectBuilding = (building: Building) => {
     const existingAltarCount = resourceSlots.value.filter(slot => slot.building?.id === 'sacrifice_altar').length;
     if (existingAltarCount >= 1) {
       console.log('献祭祭坛只能建造1个');
-      // 可以在这里显示提示消息
-      return;
-    }
-  }
-
-  // 检查经验祭坛是否已存在
-  if (building.id === 'experience_altar') {
-    const existingAltarCount = resourceSlots.value.filter(slot => slot.building?.id === 'experience_altar').length;
-    if (existingAltarCount >= 1) {
-      console.log('经验祭坛只能建造1个');
       // 可以在这里显示提示消息
       return;
     }
@@ -1093,54 +1040,6 @@ const handleSacrificeConfirm = async (characterId: string, sacrificeAmounts: Sac
 
   // 关闭对话框
   closeSacrificeDialog();
-};
-
-// ==================== 经验升级相关方法 ====================
-
-/**
- * 打开经验升级对话框
- */
-const openExperienceDialog = (slotIndex: number) => {
-  currentExperienceSlotIndex.value = slotIndex;
-  showExperienceDialog.value = true;
-};
-
-/**
- * 关闭经验升级对话框
- */
-const closeExperienceDialog = () => {
-  showExperienceDialog.value = false;
-  currentExperienceSlotIndex.value = -1;
-};
-
-/**
- * 处理经验升级确认
- */
-const handleExperienceConfirm = async (characterId: string, goldAmount: number, foodAmount: number) => {
-  // 调用经验升级服务
-  const result = ExperienceLevelUpService.levelUpByResources(characterId, goldAmount, foodAmount);
-
-  if (result.success) {
-    console.log(result.message);
-    // 更新玩家等级
-    PlayerLevelService.updatePlayerLevel();
-    // 触发事件通知调教界面刷新人物数据
-    eventEmit('人物等级更新');
-  } else {
-    console.error(result.message);
-  }
-
-  closeExperienceDialog();
-};
-
-// ==================== 事件发射器 ====================
-
-/**
- * 事件发射器
- */
-const eventEmit = (eventName: string, data?: any) => {
-  const event = new CustomEvent(eventName, { detail: data });
-  window.dispatchEvent(event);
 };
 </script>
 
@@ -1785,35 +1684,6 @@ const eventEmit = (eventName: string, data?: any) => {
     background: linear-gradient(180deg, #ef4444, #dc2626);
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-}
-
-// ==================== 经验祭坛相关样式 ====================
-
-.experience-button-container {
-  margin-top: 4px;
-}
-
-.experience-button {
-  background: linear-gradient(180deg, #22c55e, #16a34a);
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  padding: 4px 8px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
-
-  &:hover {
-    background: linear-gradient(180deg, #4ade80, #22c55e);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
   }
 
   &:active {
